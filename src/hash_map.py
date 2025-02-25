@@ -2,13 +2,15 @@ from player_list import PlayerList
 
 from typing import Any
 
+
 class HashMap:
+
     def __init__(self):
 
         self._size: int = 10
         self._length: int = 0
 
-        self._array: list[PlayerList] = [PlayerList() for i in range(self._size)]
+        self._array: list['PlayerList'] = [PlayerList() for i in range(self._size)]
         
     @property
     def size(self) -> int:
@@ -23,6 +25,11 @@ class HashMap:
     def _hash(self, value: Any) -> int:
         ...
 
+    def add(self, value: Any):
+        index = self._hash(value)
+        # TODO: Convert the value into a Player
+        self._array[index].append(value)
+
     def put(self, key: str, value: Any) -> Any:
         return self.__setitem__(key, value)
 
@@ -32,7 +39,7 @@ class HashMap:
     def remove(self, key: str) -> Any:
         return self.__delitem__(key)
 
-    def __getitem__(self, item: Any) -> Any:
+    def __getitem__(self, key: str) -> Any:
         ...
 
     def __setitem__(self, key: str, value: Any) -> Any:
