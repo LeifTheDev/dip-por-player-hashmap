@@ -33,6 +33,7 @@ class HashMap:
         index: int = self._hash(value)
         # TODO: Decide whether to convert the value into a Player
         self._array[index].append(value)
+        self._length += 1
 
     def put(self, key: str, value: Any) -> Any:
         return self.__setitem__(key, value)
@@ -65,6 +66,7 @@ class HashMap:
     def __delitem__(self, key: str) -> Any:
         index: int = self._hash(key)
         self._array[index].remove(key)
+        self._length -= 1
 
     def __len__(self) -> int:
         ...
