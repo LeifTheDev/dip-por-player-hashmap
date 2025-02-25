@@ -25,12 +25,12 @@ class HashMap:
             raise TypeError("HashMap.size must be an int.")
         self._size = value
 
-    def _hash(self, value: Any) -> int:
+    def _hash(self, value: str) -> int:
         # TODO: Implement *custom* hash algorithm
         return hash(value) % self._size
 
-    def add(self, value: Any):
-        index: int = self._hash(value)
+    def add(self, value: Player):
+        index: int = self._hash(value.uid)
         # TODO: Decide whether to convert the value into a Player
         self._array[index].append(value)
         self._length += 1
@@ -48,14 +48,13 @@ class HashMap:
     def __getitem__(self, key: str) -> Any:
         index = self._hash(key)
 
-        item: PlayerNode
         for item in self._array[index]:
             if item.key == key:
                 return item.player
 
     def __setitem__(self, key: str, value: Any) -> Any:
         index = self._hash(key)
-
+        # TODO: Consider adding update() method to PlayerList
         self._array[index].remove(key)
         self._array[index].prepend(value)
 
@@ -69,4 +68,4 @@ class HashMap:
         self._length -= 1
 
     def __len__(self) -> int:
-        ...
+        return self._length

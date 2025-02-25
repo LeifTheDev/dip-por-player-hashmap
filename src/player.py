@@ -16,5 +16,8 @@ class Player:
     def name(self):
         return self.__name
 
+    def __hash__(self):
+        ...
+
     def __str__(self):
         return f"Player(uuid={self.uid}, name={self.name})"
