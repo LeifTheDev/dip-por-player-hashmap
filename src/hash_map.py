@@ -69,3 +69,11 @@ class HashMap:
 
     def __len__(self) -> int:
         return self._length
+
+    def __repr__(self):
+        key_value_map = []
+        for linked_list in self._array:
+            if not len(linked_list) == 0:
+                key_value_map.append(', '.join([f"{repr(node.key)}: {node.player}" for node in linked_list]))
+
+        return f"{self.__class__.__name__}({', '.join(key_value_map)})"

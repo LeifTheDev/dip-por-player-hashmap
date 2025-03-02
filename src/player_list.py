@@ -184,6 +184,9 @@ class PlayerList:
         """
         raise NotImplementedError("This method has not been implemented.")
 
+    def __len__(self):
+        return len([i for i in self])
+
     def __iter__(self):
         if self.is_empty:
             return

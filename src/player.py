@@ -20,4 +20,4 @@ class Player:
         return hash(self.__uid)
 
     def __str__(self):
-        return f"Player(uuid={self.uid}, name={self.name})"
+        return f"Player(uuid={repr(self.uid)}, name={repr(self.name)})"
