@@ -65,6 +65,9 @@ class PlayerNode:
         """
         return self.player.uid
 
+    def __hash__(self):
+        return hash(self.player)
+
     def __str__(self):
         next = self.next.player if self.next else None
         last = self.last.player if self.last else None

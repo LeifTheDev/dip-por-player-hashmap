@@ -1,6 +1,6 @@
-from player_list import PlayerList
-from player_node import PlayerNode
-from player import Player
+from src.player_list import PlayerList
+from src.player_node import PlayerNode
+from src.player import Player
 
 from typing import Any
 

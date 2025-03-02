@@ -48,7 +48,9 @@ class PlayerList:
         :return:
         """
         if not isinstance(player, Player):
-            raise ValueError("PlayerList can only hold instances of PlayerNode")
+            print(isinstance(player, Player))
+            print(type(player))
+            raise ValueError("PlayerList can only hold instances of Player")
 
         node = PlayerNode(player)
 
