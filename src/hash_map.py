@@ -26,12 +26,15 @@ class HashMap:
             raise TypeError("HashMap.size must be an int.")
         self._size = value
 
-    def _hash(self, value: str) -> int:
-        # TODO: Implement *custom* hash algorithm
-        return hash(value) % self._size
+    def _hash(self, value: str|Player) -> int:
+
+        if isinstance(value, Player):
+            return hash(value) % self._size
+
+        return Player.pearson_hash(value) % self._size
 
     def add(self, value: Player):
-        index: int = self._hash(value.uid)
+        index: int = self._hash(value)
         # TODO: Decide whether to convert the value into a Player
         self._array[index].append(value)
         self._length += 1
@@ -81,3 +84,13 @@ class HashMap:
                 key_value_map.append(', '.join([f"{repr(node.key)}: {node.player}" for node in linked_list]))
 
         return f"{self.__class__.__name__}({', '.join(key_value_map)})"
+
+if __name__ == '__main__':
+
+    hm = HashMap()
+
+    for i in range(13):
+        player = Player(i, 'Jane Doe')
+        hm.add(player)
+    for i in range(13):
+        print(i, hm[i])

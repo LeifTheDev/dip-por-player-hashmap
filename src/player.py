@@ -23,12 +23,17 @@ class Player:
     def name(self):
         return self.__name
 
-    def __hash__(self):
-        key_bytes = bytes(self.__uid, encoding="utf-8")
+    @staticmethod
+    def pearson_hash(key):
+        key_bytes = bytes(str(key), encoding="utf-8")
+
         hash_ = 0
-        hash_ = [pearson_table[hash_ ^ byte] for byte in key_bytes]
+        hash_ = sum([pearson_table[hash_ ^ byte] for byte in key_bytes])
 
         return hash_
+
+    def __hash__(self):
+        return self.pearson_hash(self.__uid)
 
     def __str__(self):
         return f"Player(uuid={repr(self.uid)}, name={repr(self.name)})"
