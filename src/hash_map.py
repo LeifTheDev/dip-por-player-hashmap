@@ -69,6 +69,11 @@ class HashMap:
     def __len__(self) -> int:
         return self._length
 
+    def __iter__(self):
+        for linked_list in self._array:
+            for node in linked_list:
+                yield node.player
+
     def __repr__(self):
         key_value_map = []
         for linked_list in self._array:
