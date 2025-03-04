@@ -5,6 +5,7 @@ from src.player import Player
 from typing import Any
 
 
+
 class HashMap:
     # TODO: Implement Generics
 
@@ -52,15 +53,13 @@ class HashMap:
             if item.key == key:
                 return item.player
 
+        raise KeyError(key)
+
     def __setitem__(self, key: str, value: Any) -> Any:
         index = self._hash(key)
         # TODO: Consider adding update() method to PlayerList
         self._array[index].remove(key)
         self._array[index].prepend(value)
-
-        item: PlayerNode
-        for item in self._array[index]:
-            item.player.name = "Hi"
 
     def __delitem__(self, key: str) -> Any:
         index: int = self._hash(key)
