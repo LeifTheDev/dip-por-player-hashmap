@@ -59,6 +59,8 @@ class HashMap:
         raise KeyError(key)
 
     def __setitem__(self, key: str, value: Any) -> Any:
+        if key != value.key:
+            raise AttributeError
         index = self._hash(key)
         # TODO: Consider adding update() method to PlayerList
         self._array[index].remove(key)
@@ -93,4 +95,11 @@ if __name__ == '__main__':
         player = Player(i, 'Jane Doe')
         hm.add(player)
     for i in range(13):
+        print(i, hm[i])
+
+    for i in "Hello":
+        player = Player(i, "John Doe")
+        hm.add(player)
+
+    for i in "Hello":
         print(i, hm[i])
