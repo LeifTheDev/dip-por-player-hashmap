@@ -192,6 +192,13 @@ class PlayerList:
             return
         current = self.head
         while current.next:
-            yield current
+            yield current.player
             current = current.next
-        yield current
+        yield current.player
+
+    def __contains__(self, item):
+        for player in self:
+            if player == item:
+                return True
+
+        return False

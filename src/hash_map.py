@@ -52,9 +52,9 @@ class HashMap:
     def __getitem__(self, key: str) -> Any:
         index = self._hash(key)
 
-        for item in self._array[index]:
-            if item.key == key:
-                return item.player
+        for player in self._array[index]:
+            if player.uid == key:
+                return player
 
         raise KeyError(key)
 
@@ -83,7 +83,7 @@ class HashMap:
         key_value_map = []
         for linked_list in self._array:
             if not len(linked_list) == 0:
-                key_value_map.append(', '.join([f"{repr(node.key)}: {node.player}" for node in linked_list]))
+                key_value_map.append(', '.join([f"{repr(player.uid)}: {player.name}" for player in linked_list]))
 
         return f"{self.__class__.__name__}({', '.join(key_value_map)})"
 

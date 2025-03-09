@@ -37,3 +37,7 @@ class Player:
 
     def __str__(self):
         return f"Player(uuid={repr(self.uid)}, name={repr(self.name)})"
+
+    def __repr__(self):
+        return self.__str__()
+
