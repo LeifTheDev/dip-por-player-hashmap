@@ -20,12 +20,6 @@ class HashMap:
     def size(self) -> int:
         return self._size
 
-    @size.setter
-    def size(self, value: int):
-        if not isinstance(value, int):
-            raise TypeError("HashMap.size must be an int.")
-        self._size = value
-
     def _hash(self, value: str|Player) -> int:
 
         if isinstance(value, Player):
@@ -59,12 +53,11 @@ class HashMap:
         raise KeyError(key)
 
     def __setitem__(self, key: str, value: Any) -> Any:
-        if key != value.key:
-            raise AttributeError
         index = self._hash(key)
+        self._array[index].update(key, value)
         # TODO: Consider adding update() method to PlayerList
-        self._array[index].remove(key)
-        self._array[index].prepend(value)
+        # self._array[index].remove(key)
+        # self._array[index].prepend(value)
 
     def __delitem__(self, key: str) -> Any:
         index: int = self._hash(key)

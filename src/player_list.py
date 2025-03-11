@@ -160,6 +160,9 @@ class PlayerList:
 
         raise KeyError(f"Key '{key}' not found")
 
+    def update(self, key: str, value: str):
+        self.__setitem__(key, value)
+
     def display(self, forward: bool = True):
         """
         Print all the nodes in the list.
@@ -202,3 +205,10 @@ class PlayerList:
                 return True
 
         return False
+
+    def __setitem__(self, key, value):
+        for player in self:
+            if player.uid == key:
+                player.name = value
+                return
+        raise KeyError(key)

@@ -1,6 +1,8 @@
 import random
 
-random.seed(42)
+RANDOM_SEED = 42
+
+random.seed(RANDOM_SEED)
 pearson_table = list(range(256))
 random.shuffle(pearson_table)
 
@@ -23,8 +25,18 @@ class Player:
     def name(self):
         return self.__name
 
+    @name.setter
+    def name(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError("Player.name must be a string")
+        self.__name = value
+
     @staticmethod
     def pearson_hash(key):
+        """
+        Apply the pearson hash algorithm to the given key.
+
+        """
         key_bytes = bytes(str(key), encoding="utf-8")
 
         hash_ = 0
