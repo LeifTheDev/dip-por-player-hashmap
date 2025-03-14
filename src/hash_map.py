@@ -42,6 +42,10 @@ class HashMap:
     def remove(self, key: str) -> Any:
         return self.__delitem__(key)
 
+    def display(self):
+        message = f"{self.__class__.__name__}({', '.join([f'{index}: {player_list}' for index, player_list in enumerate(self._array)])})"
+        print(message)
+
     # Type annotations for the return values are set as any as I have not yet decided whether I want these to return anything
     def __getitem__(self, key: str) -> Any:
         index = self._hash(key)
@@ -80,6 +84,7 @@ class HashMap:
 
         return f"{self.__class__.__name__}({', '.join(key_value_map)})"
 
+
 if __name__ == '__main__':
 
     hm = HashMap()
@@ -96,3 +101,5 @@ if __name__ == '__main__':
 
     for i in "Hello":
         print(i, hm[i])
+
+    hm.display()

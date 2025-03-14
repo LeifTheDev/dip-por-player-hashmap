@@ -212,3 +212,7 @@ class PlayerList:
                 player.name = value
                 return
         raise KeyError(key)
+
+    def __repr__(self):
+        nodes = [str(node) for node in self]
+        return f"PlayerList(\n {',\n '.join(nodes)})"
