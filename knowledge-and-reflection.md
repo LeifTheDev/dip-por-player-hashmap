@@ -75,13 +75,103 @@ def sha256_hash(key: str, size: int) -> int:
 
 > Your answer here
 
+A hash function is a function used to map a key to a (usually integer). Usually, this is used within hash tables to 
+map any given key to an index within the size of the hash table.
+
+Theres a few characterisics that hash tables share, one of which is that they are deterministic. A given set of inputs will always
+produce the same output (although different algorithms may have their own unique inputs, such as pearson hash using a pearson table).
+This is critical since it allows items to be both entered and retrieved from the hash table by their key correctly.
+
+In addition to this, there are a few desirable properties that hashing functions should have.
+
+The values returned by the hash function should be distributed evenly across the range of indexes within the size of the hash
+table. This is to minimise collisions, which slow-down the lookup time of values in the hash table.
+
+Hash functions should have large sensitivity, meaning that small changes to the input value of a hash function should result in a large change to the output, 
+which helps ensure that the outputs of the hash function are evenly distributed within the hash table's size.
+
+While less important than the other properties in the context of a hash table - since security isn't necessarily a concern,
+it should be impossible/unfeasible to determine the input value of a hash function from its output.
+
 2. What are the advantages and disadvantages of each of the above hash functions? Evaluate in terms of uniformity, determinism, efficiency, collision resistance, sensitivity to input changes, and security[1](#Reference). You may need to do some reasearch to answer this question 😱
 
 > Your answer here
 
+The first hash function:
+```py
+def ssh(key):
+    return 1
+```
+This function is not suitable for use within a hash table, as it will always return ``1`` regardless of its input. This means that it
+has no uniformity, collision resistance or sensitivity, which means that no benefits will be gained from implementing a hash table. 
+
+Despite this, this function does have determinism and efficiency.
+
+For the second hash function:
+```py
+def sum_of_ascii_values(key: str, size: int) -> int:
+    total = 0
+    for char in key:
+        total += ord(char)
+    return total % size
+```
+
+This is a much more suitable hash function for use within a hash table, as it has a lot more uniformity, while also being deterministic.
+However, the uniformity of this hash function is still not perfect, since different characters are far more likely to appear than others.
+
+The security of this hash function is reasonably suitable for hash tables.
+
+For the third hash function:
+```py
+import random
+
+random.seed(42)
+
+pearson_table = list(range(256))
+random.shuffle(pearson_table)
+
+def pearson_hash(key: str, size: int) -> int:
+    hash_ = 0
+    for char in key:
+        hash_ = pearson_table[hash_ ^ ord(char)]
+    return hash_ % size
+```
+
+The pearson hash function has high uniformity, security, efficiency and sensitivity. Its uniform and has high sensitivity due to the fact that
+it maps characters to other values, removing the issues with summing ascii values. Its also secure since it uses a "pearson table" to map values. Since this table
+can be randomly generated, its unfeasible to determine what the initial value was before the hash. Due to its uniformity and sensitivity, it has a high collision resistance.
+
+
+As for the fourth hash function, ``hash()`` calls ``__hash__()`` under the hood, so by default - in python 3.4+ - the SipHash
+function is used. As well as being generally suitable in terms of uniformity and efficiency, this is hashing function is used by python as
+it is difficult to execute collision attacks.
+
+And finally for the fifth hash function:
+```py
+import hashlib
+
+def sha256_hash(key: str, size: int) -> int:
+    return int(hashlib.sha256(key.encode()).hexdigest(), 16) % size
+```
+
+SHA256 is one of the most common hashing functions, most often for passwords, SSL, etc. 
+SHA256 outputs a 256 bit, regardless of the size of the input, which contributes to its security.
+
+Overall, its a very secure hashing function and has high collision resistance, however it is slow compared to other options.
+For the purposes of a hash table, its probably not a suitable choice, as the level of security it offers is unnecessary.
+
+
+
 3. List the three most important attributes (arranged from most to least) in the context of a hash map? Justify your answer.
 
 > Your answer here
+
+1. Determinism
+2. Efficiency
+3. Collision Resistance
+
+Determinism is critical since the whole purpose of a hash map is to be able to store and retrieve a value by a key. If
+there is no 
 
 4. Which of the above hash functions would you choose to implement the requirements of the task? Why?
 
