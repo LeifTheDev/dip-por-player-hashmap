@@ -186,6 +186,20 @@ Security is usually less important in the context of a hash table, as they typic
 
 > Your answer here
 
+I would choose to implement the pearson hash.
+
+Theres a couple reasons for this:
+
+First, it is reasonably efficient and collision resistant, which means that read and write speeds for the hash table
+will remain acceptable, regardless of the size of the hash table.
+
+The pearson algorithm can also be easily implemented without using any external libraries, which is nice for the purposes of preventing sudden breaks
+in the event that python or a library updates.
+
+Finally, since it uses a pearson table (which can be saved/shared) as part of the algorithm, it allows us to work with
+persistent data (if we want to) while maintaining security. Only users we share the pearson table with can
+map a key to its hash - and by extension its value.
+
 5. In your own words, explain each line in the pearson hash function above in terms of the criteria you listed in question 2.
 
 > Your answer here
