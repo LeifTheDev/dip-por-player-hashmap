@@ -171,7 +171,16 @@ For the purposes of a hash table, its probably not a suitable choice, as the lev
 3. Collision Resistance
 
 Determinism is critical since the whole purpose of a hash map is to be able to store and retrieve a value by a key. If
-there is no 
+there is no way to map a key to a value, the hash table is useless.
+
+Efficiency is also very important for hash tables. As the hash function is used whenever a read or write happens
+in the hash table, having an efficient (fast) hash function is very important. A slow hash function will immediately 
+
+Finally, collision resistance is also important for hash functions. Having a large amount of collisions will reduce
+the read speed of the hash table, especially as it grows in items. This can be mitigated by increasing the size (size of the initial array used to store values) of the
+hash table, but this is still an important factor to consider when picking a hash function. 
+
+Security is usually less important in the context of a hash table, as they typically aren't used for secure long-term data storage.
 
 4. Which of the above hash functions would you choose to implement the requirements of the task? Why?
 
