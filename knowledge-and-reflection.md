@@ -204,9 +204,51 @@ map a key to its hash - and by extension its value.
 
 > Your answer here
 
+```py
+import random
+
+random.seed(42)
+
+pearson_table = list(range(256))
+random.shuffle(pearson_table)
+
+def pearson_hash(key: str, size: int) -> int:
+    hash_ = 0
+    for char in key:
+        hash_ = pearson_table[hash_ ^ ord(char)]
+    return hash_ % size
+```
+
+First, ``random.seed()`` determines the seed used to generate "random" numbers. This helps ensure security by individualising the pearson table generated.
+
+```py
+pearson_table = list(range(256))
+random.shuffle(pearson_table)
+```
+
+These two lines contribute to the table being deterministic, anyone with the same pearson table can map the same keys to the same values.
+
+Now we start the algorithm itself:
+```py
+def pearson_hash(key: str, size: int):
+    hash_ = 0
+    for char in key:
+        hash_ = pearson_table[hash_ ^ ord(char)]
+    return hash_ % size
+```
+
+This is fairly simple, our hash starts at 0. For each character in our key, we set the hash to ``pearson_table[hash ^ ord(char)]``.
+This line takes a bit of explaining. First, ``ord(char)``, gives is the integer for the unicode character we input. Next, we use ``^`` with the current hash value.
+``^`` performs a bitwise XOR operation, essentially returning the bits in ``hash_`` _or_ ``ord(char)``, but not both. Finally, we access the integer at that index of the pearson table. This ensures collision resistance, as common
+characters within the key do not result in only a small number of returned values. This is also not a complex algorithm, making it very efficient as a hashing algorithm.
+
+Lastly, we ``return hash_ % size``, which ensures the value is within the range of the hash table's array. 
+
 6. Write pseudocode of how you would store Players in PlayerLists in a hash map.
 
 > Your answer here
+
+
 
 ## Reflection
 
