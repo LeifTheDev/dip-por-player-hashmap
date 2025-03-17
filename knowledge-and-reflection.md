@@ -75,7 +75,7 @@ def sha256_hash(key: str, size: int) -> int:
 
 > Your answer here
 
-A hash function is a function used to map a key to a (usually integer). Usually, this is used within hash tables to 
+A hash function is a function used to map a key to a (usually integer). Usually, this is used within hash tables to
 map any given key to an index within the size of the hash table.
 
 Theres a few characterisics that hash tables share, one of which is that they are deterministic. A given set of inputs will always
@@ -87,7 +87,7 @@ In addition to this, there are a few desirable properties that hashing functions
 The values returned by the hash function should be distributed evenly across the range of indexes within the size of the hash
 table. This is to minimise collisions, which slow-down the lookup time of values in the hash table.
 
-Hash functions should have large sensitivity, meaning that small changes to the input value of a hash function should result in a large change to the output, 
+Hash functions should have large sensitivity, meaning that small changes to the input value of a hash function should result in a large change to the output,
 which helps ensure that the outputs of the hash function are evenly distributed within the hash table's size.
 
 While less important than the other properties in the context of a hash table - since security isn't necessarily a concern,
@@ -103,7 +103,7 @@ def ssh(key):
     return 1
 ```
 This function is not suitable for use within a hash table, as it will always return ``1`` regardless of its input. This means that it
-has no uniformity, collision resistance or sensitivity, which means that no benefits will be gained from implementing a hash table. 
+has no uniformity, collision resistance or sensitivity, which means that no benefits will be gained from implementing a hash table.
 
 Despite this, this function does have determinism and efficiency.
 
@@ -154,7 +154,7 @@ def sha256_hash(key: str, size: int) -> int:
     return int(hashlib.sha256(key.encode()).hexdigest(), 16) % size
 ```
 
-SHA256 is one of the most common hashing functions, most often for passwords, SSL, etc. 
+SHA256 is one of the most common hashing functions, most often for passwords, SSL, etc.
 SHA256 outputs a 256 bit, regardless of the size of the input, which contributes to its security.
 
 Overall, its a very secure hashing function and has high collision resistance, however it is slow compared to other options.
@@ -174,11 +174,11 @@ Determinism is critical since the whole purpose of a hash map is to be able to s
 there is no way to map a key to a value, the hash table is useless.
 
 Efficiency is also very important for hash tables. As the hash function is used whenever a read or write happens
-in the hash table, having an efficient (fast) hash function is very important. A slow hash function will immediately 
+in the hash table, having an efficient (fast) hash function is very important. A slow hash function will immediately
 
 Finally, collision resistance is also important for hash functions. Having a large amount of collisions will reduce
 the read speed of the hash table, especially as it grows in items. This can be mitigated by increasing the size (size of the initial array used to store values) of the
-hash table, but this is still an important factor to consider when picking a hash function. 
+hash table, but this is still an important factor to consider when picking a hash function.
 
 Security is usually less important in the context of a hash table, as they typically aren't used for secure long-term data storage.
 
@@ -242,12 +242,48 @@ This line takes a bit of explaining. First, ``ord(char)``, gives is the integer 
 ``^`` performs a bitwise XOR operation, essentially returning the bits in ``hash_`` _or_ ``ord(char)``, but not both. Finally, we access the integer at that index of the pearson table. This ensures collision resistance, as common
 characters within the key do not result in only a small number of returned values. This is also not a complex algorithm, making it very efficient as a hashing algorithm.
 
-Lastly, we ``return hash_ % size``, which ensures the value is within the range of the hash table's array. 
+Lastly, we ``return hash_ % size``, which ensures the value is within the range of the hash table's array.
 
 6. Write pseudocode of how you would store Players in PlayerLists in a hash map.
 
 > Your answer here
 
+```
+class HashMap:
+   
+   int size = 10
+   array<playerList> with length of size
+   
+   private function hash returns int:
+      <implement chosen hash algorithm>
+      
+   public function add(player):
+      var index = this.hash(player.uid)
+      this.array[index].append(player)
+      
+   public function get(key):
+      var index = this.hash(player.uid)
+      
+      foreach (player in this.array[index]):
+         if player.uid == key:
+            return player
+         raise Error("Key not found")
+         
+   
+class PlayerList:
+   
+   Player head
+   
+   public function append(player):
+       player.next = this.head
+       this.head = player
+   
+class Player:
+
+   string uid
+   string name
+   nullable player next
+```
 
 
 ## Reflection
@@ -256,9 +292,47 @@ Lastly, we ``return hash_ % size``, which ensures the value is within the range 
 
 > Your answer here
 
+From the whole assignment, the main difficulty was completing the knowledge questions, it can be difficult to put knowledge into words
+and explain sometimes.
+
+For the practical aspect of the assessment, it was mostly reworking the existing PlayerList and Player classes to work with how I wanted to
+implement the HashMap. As they were parts of a previous assessment with restrictions, there were certain refactors that had to be made in order to
+implement the HashMap, as I had not written PlayerList with a HashMap in mind previously.
+
+It was also difficult to write tests for HashMap. I don't usually like unittests that require me to look multiple data structures down to understand, I had to check PlayerList and
+Player to understand how HashMap should behave, this may be due to the "skeleton" nature of their implementation or it may just be part of testing 3 layers of custom data structures
+that build on each other.
+
 2. If you didn't have to use a PlayerList, how would you have changed them implementation of the hash map and why?
 
 > Your answer here
+
+Even if I wasn't implementing a PlayerList specifically, I probably would have used a linked list of some kind. Build properly, they are
+very easy to work with from their own methods, without having to deal with issues such as limited size - although in the event of a _resize
+being implemented the limited size of something like a ListArray, and in python this wouldn't be a concern regardless - but the base data structure wouldn't matter too much either way.
+
+The main change would be with how the following syntax works:
+```py
+my_hashmap[key] = value
+```
+
+With PlayerList, I'm the key is part of the data structure itself - ``Player.uid`` - so the key is part of the data structure. Since ``Player.name`` is the only other
+data stored within ``Player``, it makes sense that I would change the name of the player in ``__setitem__`` given these restrictions. If ``PlayerList`` wasn't a requirement,
+I would probably use the following structure:
+```
+HashMap -> LinkedList -> LinkedListNode
+```
+
+In this case, ``LinkedListNode`` would simply have ``key`` and ``value``, which is similar to the current structure, except ``value`` could be any kind of object.
+While technically its only a small difference, the main logic is the same for the general implementation of a linked list, regardless of what its storing. In this case
+I would just rather the key and value be more seperated.
+
+The other part I would consider refactoring are the ``display()`` and  ``__repr__`` methods of ``PlayerList`` and ``Player``. While they do accurately display the data,
+it is rather verbose and somewhat difficult to read. The ``key`` value of a ``LinkedListNode`` would only exist purely for the ``HashMap``, since its not required for storing data in a linked list.
+I would probably have ``LinkedList.display`` (if implemented) display data in this kind of format:
+```
+LinkedList((key: '1', value: 1), (key: '2', value: 2), (key: 'Hello', value: 'World!'))
+```
 
 ## Reference
 
@@ -275,5 +349,5 @@ Lastly, we ``return hash_ % size``, which ensures the value is within the range 
 5. **Sensitivity to input changes:** small changes in the input should produce large changes in the output.
 
 6. **Security**
-   - It should be computationally infeasible to find an input key that produces a specific hash value (non-reversibility)
-   - The output hash values should appear random and unpredictable.
+    - It should be computationally infeasible to find an input key that produces a specific hash value (non-reversibility)
+    - The output hash values should appear random and unpredictable.
