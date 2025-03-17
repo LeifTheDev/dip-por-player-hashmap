@@ -303,6 +303,12 @@ It was also difficult to write tests for HashMap. I don't usually like unittests
 Player to understand how HashMap should behave, this may be due to the "skeleton" nature of their implementation or it may just be part of testing 3 layers of custom data structures
 that build on each other.
 
+Another part of the HashMap that I found difficult to decide how to implement was deciding where to put the
+hashing function. While I decided to put it in Player, it was not a decision I liked, ideally I would have put it in HashMap.
+The main reason I didn't is because Player is the only value I wanted to hash, so it was easier to just call ``__hash__`` of the Player,
+which allows me to control how the Player is hashed easily. If I were to implement the HashMap again I would try to put the hashing algorithm as
+part of the HashMap itself, instead of in Player.
+
 2. If you didn't have to use a PlayerList, how would you have changed them implementation of the hash map and why?
 
 > Your answer here
